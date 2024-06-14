@@ -54,11 +54,12 @@ defmodule Amalgama.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
-
       {:commanded, "~> 1.4"},
       {:commanded_eventstore_adapter, "~> 1.4"},
-
-      {:ex_machina, "~> 2.7.0", only: :test}
+      {:ex_machina, "~> 2.7.0", only: :test},
+      {:uuid, "~> 1.1"},
+      {:exconstructor, "~> 1.2"},
+      {:poison, "~> 6.0"}
     ]
   end
 
