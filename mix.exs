@@ -19,7 +19,7 @@ defmodule Amalgama.MixProject do
   def application do
     [
       mod: {Amalgama.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :eventstore]
     ]
   end
 
@@ -53,7 +53,10 @@ defmodule Amalgama.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.2"}
+      {:bandit, "~> 1.2"},
+
+      {:commanded, "~> 1.4"},
+      {:commanded_eventstore_adapter, "~> 1.4"}
     ]
   end
 

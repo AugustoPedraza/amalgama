@@ -55,6 +55,8 @@ config :amalgama, AmalgamaWeb.Endpoint,
 # Enable dev routes for dashboard and mailbox
 config :amalgama, dev_routes: true
 
+config :amalgama, Amalgama.EventStore, database: "amalgama_eventstore_dev"
+
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 

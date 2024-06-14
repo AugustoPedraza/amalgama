@@ -8,6 +8,7 @@ defmodule Amalgama.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      Amalgama.CommandedApp,
       AmalgamaWeb.Telemetry,
       # Amalgama.Repo,
       {DNSCluster, query: Application.get_env(:amalgama, :dns_cluster_query) || :ignore},
