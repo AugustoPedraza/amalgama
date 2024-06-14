@@ -1,0 +1,30 @@
+version: '3.8'
+volumes:
+  postgres-data:
+  _build:
+
+services:
+  web:
+    build: .
+    command: ["sh", './entrypoint.sh']
+    ports:
+      - "4004:4004"
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/src/app
+    depends_on:
+      - db
+    env_file:
+      - local.env
+    tty: true
+    stdin_open: true
+
+  db:
+    image: postgres:latest
+    env_file:
+      - local.env
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "8001:5432"

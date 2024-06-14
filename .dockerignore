@@ -1,0 +1,28 @@
+# Elixir build artifacts
+_build/
+deps/
+
+# Erlang cookie file
+.erlang.cookie
+
+# Node build artifacts
+assets/node_modules/
+assets/build/
+assets/.cache/
+
+# Ignore local configuration and secrets
+config/*.secret.exs
+config/*.local.exs
+
+# Ignore editor and OS-specific files
+*.swp
+*.swo
+*.DS_Store
+*~
+*.tmp
+*.bak
+*.old
+
+# Ignore logs and temp files
+log/
+tmp/
