@@ -6,9 +6,6 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :amalgama, Amalgama.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
   database: "amalgama_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: System.schedulers_online() * 2
@@ -35,3 +32,6 @@ config :phoenix, :plug_init_mode, :runtime
 config :phoenix_live_view,
   # Enable helpful, but potentially expensive runtime checks
   enable_expensive_runtime_checks: true
+
+
+config :amalgama, Amalgama.EventStore, database: "amalgama_eventstore_test"

@@ -51,9 +51,6 @@ npm-debug.log
 /log
 /tmp
 
-# Test artifacts
-/test/test_helper.exs
-
 # Editor and OS-specific files
 *.swp
 *.swo

@@ -7,6 +7,8 @@ defmodule AmalgamaWeb.Router do
 
   scope "/api", AmalgamaWeb do
     pipe_through :api
+
+    resources "/users", UserController, only: [:create]
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

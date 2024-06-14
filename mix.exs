@@ -56,7 +56,9 @@ defmodule Amalgama.MixProject do
       {:bandit, "~> 1.2"},
 
       {:commanded, "~> 1.4"},
-      {:commanded_eventstore_adapter, "~> 1.4"}
+      {:commanded_eventstore_adapter, "~> 1.4"},
+
+      {:ex_machina, "~> 2.7.0", only: :test}
     ]
   end
 
