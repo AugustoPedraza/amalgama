@@ -10,7 +10,7 @@ defmodule Amalgama.Application do
     children = [
       Amalgama.CommandedApp,
       AmalgamaWeb.Telemetry,
-      # Amalgama.Repo,
+      Amalgama.Repo,
       {DNSCluster, query: Application.get_env(:amalgama, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Amalgama.PubSub},
       # Start the Finch HTTP client for sending emails

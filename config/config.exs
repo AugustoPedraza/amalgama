@@ -11,6 +11,16 @@ config :amalgama,
   ecto_repos: [Amalgama.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+config :amalgama, Amalgama.Repo,
+  stacktrace: true,
+  show_sensitive_data_on_connection_error: true,
+  username: System.get_env("PGUSER"),
+  database: System.get_env("PGDATABASE"),
+  password: System.get_env("PGPASSWORD"),
+  hostname: System.get_env("PGHOST"),
+  port: System.get_env("PGPORT"),
+  pool_size: 10
+
 # Configures the endpoint
 config :amalgama, AmalgamaWeb.Endpoint,
   url: [host: "localhost"],
