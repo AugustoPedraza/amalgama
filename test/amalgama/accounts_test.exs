@@ -1,5 +1,5 @@
 defmodule Amalgama.AccountsTest do
-  use Amalgama.DataCase
+  use Amalgama.DataCase, async: false
 
   import Amalgama.Factory
 
@@ -24,6 +24,14 @@ defmodule Amalgama.AccountsTest do
                Accounts.register_user(build(:api_user, username: ""))
 
       assert errors == %{username: ["can't be empty"]}
+    end
+
+    @tag :integration
+    test "should fail when username already taken and return error" do
+      assert {:ok, %User{}} = Accounts.register_user(build(:api_user))
+      assert {:error, :validation_failure, errors} = Accounts.register_user(build(:api_user))
+
+      assert errors == %{username: ["has already been taken"]}
     end
   end
 end

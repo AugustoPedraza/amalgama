@@ -93,6 +93,7 @@ config :amalgama, event_stores: [Amalgama.EventStore]
 config :vex,
   sources: [
     Amalgama.Support.Validators,
+    Amalgama.Accounts.Validators,
     Vex.Validators
   ]
 

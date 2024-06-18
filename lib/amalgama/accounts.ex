@@ -3,6 +3,7 @@ defmodule Amalgama.Accounts do
   The boundary for the Accounts domain.
   """
 
+  alias Amalgama.Accounts.Queries.UserByUsername
   alias Amalgama.Accounts.Commands.RegisterUser
   alias Amalgama.Accounts.Projections.User
   alias Amalgama.{Repo, CommandedApp}
@@ -21,6 +22,16 @@ defmodule Amalgama.Accounts do
       :ok -> get(User, uuid)
       reply -> reply
     end
+  end
+
+  @doc """
+  Get an existing user by their username, or return `nil` if not registered
+  """
+  def user_by_username(username) do
+    username
+    |> String.downcase()
+    |> UserByUsername.new()
+    |> Repo.one()
   end
 
   defp get(schema, uuid) do
