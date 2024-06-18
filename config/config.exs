@@ -89,6 +89,13 @@ config :amalgama, Amalgama.EventStore,
 
 config :commanded_ecto_projections, repo: Amalgama.Repo
 config :amalgama, event_stores: [Amalgama.EventStore]
+
+config :vex,
+  sources: [
+    Amalgama.Support.Validators,
+    Vex.Validators
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

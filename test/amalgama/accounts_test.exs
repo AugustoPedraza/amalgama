@@ -17,5 +17,13 @@ defmodule Amalgama.AccountsTest do
       assert user.image == nil
       assert user.username == "jake"
     end
+
+    @tag :integration
+    test "should fail with invalid data and return error" do
+      assert {:error, :validation_failure, errors} =
+               Accounts.register_user(build(:api_user, username: ""))
+
+      assert errors == %{username: ["can't be empty"]}
+    end
   end
 end
