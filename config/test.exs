@@ -33,5 +33,4 @@ config :phoenix_live_view,
   # Enable helpful, but potentially expensive runtime checks
   enable_expensive_runtime_checks: true
 
-
 config :amalgama, Amalgama.EventStore, database: "amalgama_eventstore_test"

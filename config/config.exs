@@ -87,6 +87,7 @@ config :amalgama, Amalgama.EventStore,
   port: System.get_env("PGPORT"),
   pool_size: 10
 
+config :commanded_ecto_projections, repo: Amalgama.Repo
 config :amalgama, event_stores: [Amalgama.EventStore]
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

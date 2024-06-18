@@ -18,7 +18,8 @@ defmodule Amalgama.Application do
       # Start a worker by calling: Amalgama.Worker.start_link(arg)
       # {Amalgama.Worker, arg},
       # Start to serve requests, typically the last entry
-      AmalgamaWeb.Endpoint
+      AmalgamaWeb.Endpoint,
+      Amalgama.Accounts.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

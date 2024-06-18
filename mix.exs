@@ -59,7 +59,7 @@ defmodule Amalgama.MixProject do
       {:ex_machina, "~> 2.7.0", only: :test},
       {:uuid, "~> 1.1"},
       {:exconstructor, "~> 1.2"},
-      {:poison, "~> 6.0"}
+      {:commanded_ecto_projections, "~> 1.4"}
     ]
   end
 
