@@ -19,6 +19,7 @@ defmodule Amalgama.Accounts do
     |> RegisterUser.assign_uuid(uuid)
     |> RegisterUser.downcase_username()
     |> RegisterUser.downcase_email()
+    |> RegisterUser.hash_password()
     |> CommandedApp.dispatch(consistency: :strong)
     |> case do
       :ok -> get(User, uuid)

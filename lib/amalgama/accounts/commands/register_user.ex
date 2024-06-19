@@ -1,16 +1,15 @@
 defmodule Amalgama.Accounts.Commands.RegisterUser do
-  defstruct [
-    :user_uuid,
-    :username,
-    :email,
-    :password,
-    :hashed_password
-  ]
+  defstruct user_uuid: "",
+            username: "",
+            email: "",
+            password: "",
+            hashed_password: ""
 
   use ExConstructor
   use Vex.Struct
 
   alias __MODULE__
+  alias Amalgama.Accounts.Auth
 
   validates(:user_uuid, uuid: true)
 
@@ -44,6 +43,13 @@ defmodule Amalgama.Accounts.Commands.RegisterUser do
   """
   def assign_uuid(%RegisterUser{} = register_user, uuid) do
     %RegisterUser{register_user | user_uuid: uuid}
+  end
+
+  @doc """
+  Hash the password, clear the original password
+  """
+  def hash_password(%RegisterUser{password: password} = register_user) do
+    %RegisterUser{register_user | password: nil, hashed_password: Auth.hash_password(password)}
   end
 
   @doc """

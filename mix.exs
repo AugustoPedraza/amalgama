@@ -60,7 +60,8 @@ defmodule Amalgama.MixProject do
       {:uuid, "~> 1.1"},
       {:exconstructor, "~> 1.2"},
       {:commanded_ecto_projections, "~> 1.4"},
-      {:vex, "~> 0.9"}
+      {:vex, "~> 0.9"},
+      {:bcrypt_elixir, "~> 1.0"}
     ]
   end
 

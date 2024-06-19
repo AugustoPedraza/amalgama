@@ -4,6 +4,7 @@ defmodule Amalgama.AccountsTest do
   import Amalgama.Factory
 
   alias Amalgama.Accounts
+  alias Amalgama.Accounts.Auth
   alias Amalgama.Accounts.Projections.User
 
   defp register_user(attrs \\ %{}) do
@@ -17,7 +18,7 @@ defmodule Amalgama.AccountsTest do
 
       assert user.bio == nil
       assert user.email == "jake@jake.jake"
-      assert user.hashed_password == "jakejake"
+      refute user.hashed_password == nil
       assert user.image == nil
       assert user.username == "jake"
     end
@@ -85,6 +86,13 @@ defmodule Amalgama.AccountsTest do
       assert {:ok, %User{} = user} = register_user(email: "JAKE@JAKE.JAKE")
 
       assert user.email == "jake@jake.jake"
+    end
+
+    @tag :integration
+    test "should hash password" do
+      assert {:ok, %User{} = user} = register_user()
+
+      assert Auth.validate_password("jakejake", user.hashed_password)
     end
   end
 end

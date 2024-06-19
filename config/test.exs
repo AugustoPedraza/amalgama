@@ -34,3 +34,5 @@ config :phoenix_live_view,
   enable_expensive_runtime_checks: true
 
 config :amalgama, Amalgama.EventStore, database: "amalgama_eventstore_test"
+
+config :bcrypt_elixir, log_rounds: 4
