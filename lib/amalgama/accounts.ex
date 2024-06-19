@@ -15,8 +15,9 @@ defmodule Amalgama.Accounts do
     uuid = UUID.uuid4()
 
     attrs
-    |> Map.put(:user_uuid, uuid)
     |> RegisterUser.new()
+    |> RegisterUser.assign_uuid(uuid)
+    |> RegisterUser.downcase_username()
     |> CommandedApp.dispatch(consistency: :strong)
     |> case do
       :ok -> get(User, uuid)

@@ -40,5 +40,20 @@ defmodule Amalgama.AccountsTest do
       |> Enum.map(fn _ -> Task.async(fn -> Accounts.register_user(build(:api_user)) end) end)
       |> Enum.map(&Task.await/1)
     end
+
+    @tag :integration
+    test "should fail when username format is invalid and return error" do
+      assert {:error, :validation_failure, errors} =
+               Accounts.register_user(build(:api_user, username: "j@ke"))
+
+      assert errors == %{username: ["is invalid"]}
+    end
+
+    @tag :integration
+    test "should convert username to lowercase" do
+      assert {:ok, %User{} = user} = Accounts.register_user(build(:api_user, username: "JAKE"))
+
+      assert user.username == "jake"
+    end
   end
 end
