@@ -32,7 +32,7 @@ defmodule Amalgama.AccountsTest do
     @tag :integration
     test "should fail when username already taken and return error" do
       assert {:ok, %User{}} = register_user()
-      assert {:error, :validation_failure, errors} = register_user()
+      assert {:error, :validation_failure, errors} = register_user(email: "another@email.com")
 
       assert errors == %{username: ["has already been taken"]}
     end
@@ -56,6 +56,35 @@ defmodule Amalgama.AccountsTest do
       assert {:ok, %User{} = user} = register_user(username: "JAKE")
 
       assert user.username == "jake"
+    end
+
+    @tag :integration
+    test "should fail when email address already taken and return error" do
+      assert {:ok, %User{}} = register_user(username: "jake")
+      assert {:error, :validation_failure, errors} = register_user(username: "jake2")
+
+      assert errors == %{email: ["has already been taken"]}
+    end
+
+    @tag :integration
+    test "should fail when registering identical email addresses at same time and return error" do
+      1..2
+      |> Enum.map(fn x -> Task.async(fn -> register_user(username: "user#{x}") end) end)
+      |> Enum.map(&Task.await/1)
+    end
+
+    @tag :integration
+    test "should fail when email address format is invalid and return error" do
+      assert {:error, :validation_failure, errors} = register_user(email: "invalidemail")
+
+      assert errors == %{email: ["is invalid"]}
+    end
+
+    @tag :integration
+    test "should convert email address to lowercase" do
+      assert {:ok, %User{} = user} = register_user(email: "JAKE@JAKE.JAKE")
+
+      assert user.email == "jake@jake.jake"
     end
   end
 end

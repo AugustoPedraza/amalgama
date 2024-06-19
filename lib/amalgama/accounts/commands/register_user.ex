@@ -21,14 +21,21 @@ defmodule Amalgama.Accounts.Commands.RegisterUser do
     format: [with: ~r/^[a-z0-9]+$/, allow_nil: true, allow_blank: true, message: "is invalid"]
   )
 
-  validates(:email, presence: [message: "can't be empty"], string: true)
+  validates(:email,
+    unique_email: true,
+    presence: [message: "can't be empty"],
+    string: true,
+    format: [with: ~r/\S+@\S+\.\S+/, allow_nil: true, allow_blank: true, message: "is invalid"]
+  )
+
   validates(:hashed_password, presence: [message: "can't be empty"], string: true)
 
   defimpl Amalgama.Support.Middleware.Uniqueness.UniqueFields,
     for: Amalgama.Accounts.Commands.RegisterUser do
     def unique(_command),
       do: [
-        {:username, "has already been taken"}
+        {:username, "has already been taken"},
+        {:email, "has already been taken"}
       ]
   end
 
@@ -44,5 +51,12 @@ defmodule Amalgama.Accounts.Commands.RegisterUser do
   """
   def downcase_username(%RegisterUser{username: username} = register_user) do
     %RegisterUser{register_user | username: String.downcase(username)}
+  end
+
+  @doc """
+  Convert email to lowercase characters
+  """
+  def downcase_email(%RegisterUser{email: email} = register_user) do
+    %RegisterUser{register_user | email: String.downcase(email)}
   end
 end

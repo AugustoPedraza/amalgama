@@ -3,7 +3,7 @@ defmodule Amalgama.Accounts do
   The boundary for the Accounts domain.
   """
 
-  alias Amalgama.Accounts.Queries.UserByUsername
+  alias Amalgama.Accounts.Queries.{UserByUsername, UserByEmail}
   alias Amalgama.Accounts.Commands.RegisterUser
   alias Amalgama.Accounts.Projections.User
   alias Amalgama.{Repo, CommandedApp}
@@ -18,6 +18,7 @@ defmodule Amalgama.Accounts do
     |> RegisterUser.new()
     |> RegisterUser.assign_uuid(uuid)
     |> RegisterUser.downcase_username()
+    |> RegisterUser.downcase_email()
     |> CommandedApp.dispatch(consistency: :strong)
     |> case do
       :ok -> get(User, uuid)
@@ -32,6 +33,16 @@ defmodule Amalgama.Accounts do
     username
     |> String.downcase()
     |> UserByUsername.new()
+    |> Repo.one()
+  end
+
+  @doc """
+  Get an existing user by their email, or return `nil` if not registered
+  """
+  def user_by_email(username) do
+    username
+    |> String.downcase()
+    |> UserByEmail.new()
     |> Repo.one()
   end
 
