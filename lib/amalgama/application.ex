@@ -19,7 +19,9 @@ defmodule Amalgama.Application do
       # {Amalgama.Worker, arg},
       # Start to serve requests, typically the last entry
       AmalgamaWeb.Endpoint,
-      Amalgama.Accounts.Supervisor
+      Amalgama.Accounts.Supervisor,
+      # Enforce unique constraints
+      {Amalgama.Support.Unique, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
