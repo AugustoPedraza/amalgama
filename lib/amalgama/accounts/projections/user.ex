@@ -1,6 +1,7 @@
 defmodule Amalgama.Accounts.Projections.User do
   use Ecto.Schema
 
+  @derive {Phoenix.Param, key: :uuid}
   @primary_key {:uuid, :binary_id, autogenerate: false}
   schema "accounts_users" do
     field :image, :string

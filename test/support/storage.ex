@@ -16,9 +16,9 @@ defmodule Amalgama.Storage do
   end
 
   defp reset_readstore do
-    config = Application.get_env(:amalgama, Amalgama.Repo)
+    readstore_config = Application.get_env(:amalgama, Amalgama.Repo)
 
-    {:ok, conn} = Postgrex.start_link(config)
+    {:ok, conn} = Postgrex.start_link(readstore_config)
 
     Postgrex.query!(conn, truncate_readstore_tables(), [])
   end
@@ -28,8 +28,7 @@ defmodule Amalgama.Storage do
     TRUNCATE TABLE
       accounts_users,
       projection_versions
-    RESTART IDENTITY
-    CASCADE;
+    RESTART IDENTITY;
     """
   end
 end

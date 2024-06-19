@@ -1,5 +1,5 @@
 defmodule Amalgama.AccountsTest do
-  use Amalgama.DataCase, async: false
+  use Amalgama.DataCase
 
   import Amalgama.Factory
 

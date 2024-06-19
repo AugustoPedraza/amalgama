@@ -31,8 +31,15 @@ defmodule AmalgamaWeb.ConnCase do
     end
   end
 
-  setup tags do
-    Amalgama.DataCase.setup_sandbox(tags)
+  setup do
+    {:ok, _} = Application.ensure_all_started(:amalgama)
+
+    on_exit(fn ->
+      :ok = Application.stop(:amalgama)
+
+      Amalgama.Storage.reset!()
+    end)
+
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end
