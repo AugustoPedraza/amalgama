@@ -8,7 +8,7 @@ defmodule Amalgama.Blog do
   alias Amalgama.{CommandedApp, Blog, Repo}
   alias Blog.{Commands, Projections, Queries}
 
-  alias Queries.ArticleBySlug
+  alias Queries.{ArticleBySlug, ListArticles}
 
   alias Commands.{CreateAuthor, PublishArticle}
   alias Projections.{Author, Article}
@@ -63,6 +63,17 @@ defmodule Amalgama.Blog do
     else
       reply -> reply
     end
+  end
+
+  @doc """
+  Returns most recent articles globally by default.
+
+  Provide tag, author or favorited query parameter to filter results.
+  """
+  @spec list_articles(params :: map()) ::
+          {articles :: list(Article.t()), article_count :: non_neg_integer()}
+  def list_articles(params \\ %{}) do
+    ListArticles.paginate(params, Repo)
   end
 
   defp get(schema, uuid) do

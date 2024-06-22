@@ -6,10 +6,10 @@ defmodule AmalgamaWeb.ArticleController do
 
   action_fallback AmalgamaWeb.FallbackController
 
-  # def index(conn, _params) do
-  #   articles = Blog.list_articles()
-  #   render(conn, :index, articles: articles)
-  # end
+  def index(conn, params) do
+    {articles, total_count} = Blog.list_articles(params)
+    render(conn, :index, articles: articles, total_count: total_count)
+  end
 
   def create(%{private: %{guardian_current_user_resource: current_user}} = conn, %{
         "article" => article_params

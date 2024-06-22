@@ -14,13 +14,15 @@ defmodule AmalgamaWeb.Router do
 
     post "/users/login", SessionController, :create
     post "/users", UserController, :create
+
+    resources "/articles", ArticleController, only: [:index]
   end
 
   scope "/api", AmalgamaWeb do
     pipe_through [:api, :jwt_authenticated]
 
     get "/user", UserController, :current
-    resources "/articles", ArticleController, except: [:new, :edit]
+    resources "/articles", ArticleController, only: [:create]
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

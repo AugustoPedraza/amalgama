@@ -4,8 +4,8 @@ defmodule AmalgamaWeb.ArticleJSON do
   @doc """
   Renders a list of articles.
   """
-  def index(%{articles: articles}) do
-    %{data: for(article <- articles, do: data(article))}
+  def index(%{articles: articles, total_count: total_count}) do
+    %{data: %{articles: for(article <- articles, do: data(article)), articlesCount: total_count}}
   end
 
   @doc """

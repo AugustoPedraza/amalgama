@@ -23,18 +23,56 @@ defmodule Amalgama.BlogTest do
       assert article.author_image == nil
     end
 
-    # @tag :integration
-    # test "should generate unique URL slug", %{author: author} do
-    #   assert {:ok, %Article{} = article1} = Blog.publish_article(author, build(:article))
-    #   assert article1.slug == "how-to-train-your-dragon"
+    @tag :integration
+    test "should generate unique URL slug", %{author: author} do
+      assert {:ok, %Article{} = article1} = Blog.publish_article(author, build(:article))
+      assert article1.slug == "how-to-train-your-dragon"
 
-    #   assert {:ok, %Article{} = article2} = Blog.publish_article(author, build(:article))
-    #   assert article2.slug == "how-to-train-your-dragon-2"
-    # end
+      assert {:ok, %Article{} = article2} = Blog.publish_article(author, build(:article))
+      assert article2.slug == "how-to-train-your-dragon-2"
+    end
+  end
+
+  describe "list articles" do
+    setup [
+      :create_author,
+      :publish_articles
+    ]
+
+    @tag :integration
+    test "should list articles by published date", %{articles: [article1, article2]} do
+      assert {[article2, article1], 2} == Blog.list_articles()
+    end
+
+    @tag :integration
+    test "should limit articles", %{articles: [_article1, article2]} do
+      assert {[article2], 2} == Blog.list_articles(%{limit: 1})
+    end
+
+    @tag :integration
+    test "should paginate articles", %{articles: [article1, _article2]} do
+      assert {[article1], 2} == Blog.list_articles(%{offset: 1})
+    end
+  end
+
+  defp publish_articles(%{author: author}) do
+    {:ok, article1} = fixture(:article, author: author)
+
+    {:ok, article2} =
+      fixture(:article,
+        author: author,
+        title: "How to train your dragon 2",
+        description: "So toothless",
+        body: "It a dragon"
+      )
+
+    [
+      articles: [article1, article2]
+    ]
   end
 
   defp create_author(_context) do
-    {:ok, author} = fixture(:author)
+    {:ok, author} = fixture(:author, user_uuid: UUID.uuid4())
 
     [author: author]
   end
