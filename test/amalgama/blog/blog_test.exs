@@ -65,11 +65,23 @@ defmodule Amalgama.BlogTest do
     } do
       assert {[article2, article1], 2} == Blog.list_articles(%{author: "jake"})
     end
+
+    @tag :integration
+    test "should filter by tag returning only tagged articles", %{articles: [article1, _article2]} do
+      assert {[article1], 1} == Blog.list_articles(%{tag: "believe"})
+    end
+
+    @tag :integration
+    test "should filter by tag" do
+      assert {[], 0} == Blog.list_articles(%{tag: "unknown"})
+    end
   end
 
   defp publish_articles(%{author: author}) do
-    {:ok, article1} = fixture(:article, author: author)
-    :timer.sleep(1000)
+    {:ok, article1} =
+      fixture(:article, author: author, tag_list: ["dragons", "training", "believe"])
+
+    :timer.sleep(700)
 
     {:ok, article2} =
       fixture(:article,
