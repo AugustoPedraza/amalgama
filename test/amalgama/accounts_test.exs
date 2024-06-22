@@ -4,7 +4,7 @@ defmodule Amalgama.AccountsTest do
   import Amalgama.Factory
 
   alias Amalgama.Accounts
-  alias Amalgama.Accounts.Auth
+  alias Amalgama.Auth
   alias Amalgama.Accounts.Projections.User
 
   defp register_user(attrs \\ %{}) do

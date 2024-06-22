@@ -51,4 +51,40 @@ defmodule AmalgamaWeb.UserControllerTest do
              }
     end
   end
+
+  describe "get current user" do
+    @tag :web
+    test "should return user when authenticated", %{conn: conn} do
+      response =
+        conn
+        |> authenticated_conn()
+        |> get(~p"/api/user")
+        |> json_response(200)
+
+      assert %{
+               "bio" => nil,
+               "email" => "jake@jake.jake",
+               "token" => token,
+               "image" => nil,
+               "username" => "jake"
+             } = response["data"]["user"]
+
+      refute token == ""
+      refute token == nil
+    end
+
+    @tag :web
+    test "should not return user when unauthenticated", %{conn: conn} do
+      conn = get(conn, ~p"/api/user")
+
+      assert response(conn, 401)
+    end
+  end
+
+  defp authenticated_conn(conn) do
+    {:ok, user} = fixture(:user)
+    {:ok, jwt} = AmalgamaWeb.JWT.generate_jwt(user)
+
+    put_req_header(conn, "authorization", "Token " <> jwt)
+  end
 end

@@ -11,14 +11,15 @@ defmodule AmalgamaWeb.UserJSON do
   @doc """
   Renders a single user.
   """
-  def show(%{user: user}) do
-    %{data: %{user: data(user)}}
+  def show(%{user: user, jwt: jwt}) do
+    %{data: %{user: data(user, jwt), jwt: jwt}}
   end
 
-  defp data(%User{} = user) do
+  defp data(%User{} = user, jwt) do
     %{
       username: user.username,
       email: user.email,
+      token: jwt,
       hashed_password: user.hashed_password,
       bio: user.bio,
       image: user.image

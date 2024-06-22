@@ -43,6 +43,7 @@ defmodule AmalgamaWeb do
 
       import Plug.Conn
       import AmalgamaWeb.Gettext
+      import AmalgamaWeb.JWT
 
       unquote(verified_routes())
     end

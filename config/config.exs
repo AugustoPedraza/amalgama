@@ -97,6 +97,15 @@ config :vex,
     Vex.Validators
   ]
 
+config :amalgama, Amalgama.Auth.Guardian,
+  allowed_algos: ["HS512"],
+  verify_module: Guardian.JWT,
+  issuer: "Amalgama",
+  ttl: {30, :days},
+  allowed_drift: 2000,
+  verify_issuer: true,
+  secret_key: "R+pkl4FlEVeDSFm/mgcD3MPMTP0yNebtXSYx8kFrz9Ci9Bt/MK0FdmXZvgFC4l5Y"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

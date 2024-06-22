@@ -9,7 +9,7 @@ defmodule Amalgama.Accounts.Commands.RegisterUser do
   use Vex.Struct
 
   alias __MODULE__
-  alias Amalgama.Accounts.Auth
+  alias Amalgama.Auth
 
   validates(:user_uuid, uuid: true)
 
