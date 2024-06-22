@@ -25,6 +25,7 @@ defmodule Amalgama.DataCase do
       import Ecto.Query
       import Amalgama.DataCase
       import Commanded.Assertions.EventAssertions
+      import Amalgama.{Factory, Fixture}
     end
   end
 

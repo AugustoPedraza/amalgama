@@ -5,11 +5,20 @@ defmodule Amalgama.Blog do
 
   import Ecto.Query, warn: false
 
-  alias Amalgama.{CommandedApp, Blog, Repo, Router}
-  alias Blog.{Commands, Projections}
+  alias Amalgama.{CommandedApp, Blog, Repo}
+  alias Blog.{Commands, Projections, Queries}
 
-  alias Commands.CreateAuthor
-  alias Projections.Author
+  alias Queries.ArticleBySlug
+
+  alias Commands.{CreateAuthor, PublishArticle}
+  alias Projections.{Author, Article}
+
+  @doc """
+  Get the author for a given uuid.
+  """
+  def get_author!(uuid) do
+    Repo.get!(Author, uuid)
+  end
 
   @doc """
   Create an author.
@@ -22,6 +31,36 @@ defmodule Amalgama.Blog do
     |> CommandedApp.dispatch(consistency: :strong)
     |> case do
       :ok -> get(Author, uuid)
+      reply -> reply
+    end
+  end
+
+  @doc """
+  Get an article by its URL slug, or return `nil` if not found.
+  """
+  def article_by_slug(slug) do
+    slug
+    |> String.downcase()
+    |> ArticleBySlug.new()
+    |> Repo.one()
+  end
+
+  @doc """
+  Publishes an article by the given author.
+  """
+  def publish_article(%Author{} = author, attrs \\ %{}) do
+    uuid = UUID.uuid4()
+
+    publish_article =
+      attrs
+      |> PublishArticle.new()
+      |> PublishArticle.assign_uuid(uuid)
+      |> PublishArticle.assign_author(author)
+      |> PublishArticle.generate_url_slug()
+
+    with :ok <- CommandedApp.dispatch(publish_article, consistency: :strong) do
+      get(Article, uuid)
+    else
       reply -> reply
     end
   end

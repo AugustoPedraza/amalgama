@@ -1,5 +1,5 @@
 defmodule AmalgamaWeb.ArticleJSON do
-  alias Amalgama.Blog.Article
+  alias Amalgama.Blog.Projections.Article
 
   @doc """
   Renders a list of articles.
@@ -17,18 +17,21 @@ defmodule AmalgamaWeb.ArticleJSON do
 
   defp data(%Article{} = article) do
     %{
-      id: article.id,
       slug: article.slug,
       title: article.title,
       description: article.description,
       body: article.body,
-      tag_list: article.tag_list,
-      favorite_count: article.favorite_count,
-      published_at: article.published_at,
-      author_uuid: article.author_uuid,
-      author_username: article.author_username,
-      author_bio: article.author_bio,
-      author_image: article.author_image
+      tagList: article.tag_list,
+      createdAt: NaiveDateTime.to_iso8601(article.published_at),
+      updatedAt: NaiveDateTime.to_iso8601(article.updated_at),
+      favoritesCount: article.favorite_count,
+      favorited: false,
+      author: %{
+        username: article.author_username,
+        bio: article.author_bio,
+        image: article.author_image,
+        following: false
+      }
     }
   end
 end

@@ -20,6 +20,7 @@ defmodule AmalgamaWeb.Router do
     pipe_through [:api, :jwt_authenticated]
 
     get "/user", UserController, :current
+    resources "/articles", ArticleController, except: [:new, :edit]
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

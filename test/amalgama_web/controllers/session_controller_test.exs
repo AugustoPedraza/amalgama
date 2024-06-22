@@ -1,11 +1,7 @@
 defmodule AmalgamaWeb.SessionControllerTest do
   use AmalgamaWeb.ConnCase
 
-  import Amalgama.Factory
-
-  def fixture(:user, attrs \\ []) do
-    build(:api_user, attrs) |> Amalgama.Accounts.register_user()
-  end
+  import Amalgama.Fixture
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}

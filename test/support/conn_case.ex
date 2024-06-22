@@ -25,6 +25,7 @@ defmodule AmalgamaWeb.ConnCase do
       use AmalgamaWeb, :verified_routes
 
       # Import conveniences for testing with connections
+      import AmalgamaWeb.ConnHelpers
       import Plug.Conn
       import Phoenix.ConnTest
       import AmalgamaWeb.ConnCase

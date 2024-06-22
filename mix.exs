@@ -62,7 +62,8 @@ defmodule Amalgama.MixProject do
       {:commanded_ecto_projections, "~> 1.4"},
       {:vex, "~> 0.9"},
       {:bcrypt_elixir, "~> 1.0"},
-      {:guardian, "~> 2.3"}
+      {:guardian, "~> 2.3"},
+      {:slugger, "~> 0.3"}
     ]
   end
 

@@ -4,8 +4,8 @@ defmodule Amalgama.Router do
   alias Amalgama.Accounts.Aggregates.User
   alias Amalgama.Accounts.Commands.RegisterUser
 
-  alias Amalgama.Blog.Aggregates.Author
-  alias Amalgama.Blog.Commands.CreateAuthor
+  alias Amalgama.Blog.Aggregates.{Author, Article}
+  alias Amalgama.Blog.Commands.{CreateAuthor, PublishArticle}
 
   alias Amalgama.Support.Middleware.{Uniqueness, Validate}
 
@@ -14,7 +14,9 @@ defmodule Amalgama.Router do
 
   identify(Author, by: :author_uuid, prefix: "author-")
   identify(User, by: :user_uuid, prefix: "user-")
+  identify(Article, by: :article_uuid, prefix: "article-")
 
   dispatch([RegisterUser], to: User)
   dispatch([CreateAuthor], to: Author)
+  dispatch([PublishArticle], to: Article)
 end

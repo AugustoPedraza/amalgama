@@ -8,7 +8,7 @@ defmodule Amalgama.AccountsTest do
   alias Amalgama.Accounts.Projections.User
 
   defp register_user(attrs \\ %{}) do
-    Accounts.register_user(build(:api_user, attrs))
+    Accounts.register_user(build(:user, attrs))
   end
 
   describe "register user" do

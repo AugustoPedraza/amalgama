@@ -11,7 +11,7 @@ defmodule Amalgama.Blog.AuthorTest do
 
   describe "an author" do
     defp register_user(attrs \\ %{}) do
-      Accounts.register_user(build(:api_user, attrs))
+      Accounts.register_user(build(:user, attrs))
     end
 
     @tag :integration

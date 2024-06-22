@@ -13,6 +13,7 @@ config :amalgama,
 
 config :amalgama, Amalgama.Repo,
   stacktrace: true,
+  migration_primary_key: [name: :uuid, type: :uuid],
   show_sensitive_data_on_connection_error: true,
   username: System.get_env("PGUSER"),
   database: System.get_env("PGDATABASE"),
@@ -94,6 +95,7 @@ config :vex,
   sources: [
     Amalgama.Support.Validators,
     Amalgama.Accounts.Validators,
+    Amalgama.Blog.Validators,
     Vex.Validators
   ]
 

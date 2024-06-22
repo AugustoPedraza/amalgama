@@ -1,4 +1,4 @@
-defmodule Amalgama.Repo.Migrations.CreateBlogAuthor do
+defmodule Amalgama.Repo.Migrations.CreateBlogAuthors do
   use Ecto.Migration
 
   def change do

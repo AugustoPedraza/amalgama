@@ -1,11 +1,7 @@
 defmodule AmalgamaWeb.UserControllerTest do
   use AmalgamaWeb.ConnCase
 
-  import Amalgama.Factory
-
-  def fixture(:user, attrs \\ []) do
-    build(:api_user, attrs) |> Amalgama.Accounts.register_user()
-  end
+  import Amalgama.{Fixture, Factory}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -14,7 +10,7 @@ defmodule AmalgamaWeb.UserControllerTest do
   describe "register user" do
     @tag :web
     test "create and return user when data is valid", %{conn: conn} do
-      conn = post(conn, ~p"/api/users", user: build(:api_user))
+      conn = post(conn, ~p"/api/users", user: build(:user))
       assert data = json_response(conn, 201)["data"]
 
       assert %{
@@ -27,7 +23,7 @@ defmodule AmalgamaWeb.UserControllerTest do
 
     @tag :web
     test "should not create user and render errors when data is invalid", %{conn: conn} do
-      conn = post(conn, ~p"/api/users", user: build(:api_user, username: ""))
+      conn = post(conn, ~p"/api/users", user: build(:user, username: ""))
 
       assert json_response(conn, 422)["errors"] == %{
                "username" => [
@@ -42,7 +38,7 @@ defmodule AmalgamaWeb.UserControllerTest do
       {:ok, _user} = fixture(:user)
 
       # attempt to register the same username
-      conn = post(conn, ~p"/api/users", user: build(:api_user, email: "jake2@jake.jake"))
+      conn = post(conn, ~p"/api/users", user: build(:user, email: "jake2@jake.jake"))
 
       assert json_response(conn, 422)["errors"] == %{
                "username" => [
@@ -79,12 +75,5 @@ defmodule AmalgamaWeb.UserControllerTest do
 
       assert response(conn, 401)
     end
-  end
-
-  defp authenticated_conn(conn) do
-    {:ok, user} = fixture(:user)
-    {:ok, jwt} = AmalgamaWeb.JWT.generate_jwt(user)
-
-    put_req_header(conn, "authorization", "Token " <> jwt)
   end
 end

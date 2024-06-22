@@ -9,7 +9,8 @@ defmodule Amalgama.Blog.Projections.Article do
     field :slug, :string
     field :tag_list, {:array, :string}
     field :favorite_count, :integer
-    field :published_at, :naive_datetime
+    field :published_at, :utc_datetime
+
     field :author_uuid, :binary_id
     field :author_username, :string
     field :author_bio, :string

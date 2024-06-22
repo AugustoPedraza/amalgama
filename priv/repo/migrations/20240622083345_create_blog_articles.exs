@@ -10,7 +10,8 @@ defmodule Amalgama.Repo.Migrations.CreateBlogArticles do
       add :body, :text
       add :tag_list, {:array, :text}
       add :favorite_count, :integer
-      add :published_at, :naive_datetime
+      add :published_at, :utc_datetime
+
       add :author_uuid, :binary
       add :author_username, :text
       add :author_bio, :text
