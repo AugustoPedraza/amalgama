@@ -15,7 +15,8 @@ defmodule AmalgamaWeb.Router do
     post "/users/login", SessionController, :create
     post "/users", UserController, :create
 
-    resources "/articles", ArticleController, only: [:index]
+    get "/articles", ArticleController, :index
+    get "/articles/:slug", ArticleController, :show
   end
 
   scope "/api", AmalgamaWeb do

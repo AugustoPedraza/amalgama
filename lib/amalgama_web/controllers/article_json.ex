@@ -12,7 +12,7 @@ defmodule AmalgamaWeb.ArticleJSON do
   Renders a single article.
   """
   def show(%{article: article}) do
-    %{data: data(article)}
+    %{data: %{article: data(article)}}
   end
 
   defp data(%Article{} = article) do

@@ -23,10 +23,10 @@ defmodule AmalgamaWeb.ArticleController do
     end
   end
 
-  # def show(conn, %{"id" => id}) do
-  #   article = Blog.get_article!(id)
-  #   render(conn, :show, article: article)
-  # end
+  def show(conn, %{"slug" => slug}) do
+    article = Blog.article_by_slug!(slug)
+    render(conn, :show, article: article)
+  end
 
   # def update(conn, %{"id" => id, "article" => article_params}) do
   #   article = Blog.get_article!(id)

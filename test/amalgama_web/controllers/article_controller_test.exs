@@ -12,7 +12,7 @@ defmodule AmalgamaWeb.ArticleControllerTest do
     @tag :web
     test "should create and return article when data is valid", %{conn: conn} do
       conn = post authenticated_conn(conn), ~p"/api/articles", article: build(:article)
-      json = json_response(conn, 201)["data"]
+      json = json_response(conn, 201)["data"]["article"]
       created_at = json["createdAt"]
       updated_at = json["updatedAt"]
 
@@ -98,6 +98,51 @@ defmodule AmalgamaWeb.ArticleControllerTest do
     end
   end
 
+  describe "get article" do
+    setup [
+      :create_author,
+      :publish_article
+    ]
+
+    @tag :web
+
+    test "should return published article by slug", %{conn: conn} do
+      conn = get(conn, ~p"/api/articles/how-to-train-your-dragon")
+      json = json_response(conn, 200)["data"]
+      article = json["article"]
+      created_at = article["createdAt"]
+      updated_at = article["updatedAt"]
+
+      assert json == %{
+               "article" => %{
+                 "slug" => "how-to-train-your-dragon",
+                 "title" => "How to train your dragon",
+                 "description" => "Ever wonder how?",
+                 "body" => "You have to believe",
+                 "tagList" => ["dragons", "training"],
+                 "createdAt" => created_at,
+                 "updatedAt" => updated_at,
+                 "favorited" => false,
+                 "favoritesCount" => 0,
+                 "author" => %{
+                   "username" => "jake",
+                   "bio" => nil,
+                   "image" => nil,
+                   "following" => false
+                 }
+               }
+             }
+    end
+  end
+
+  defp publish_article(%{author: author}) do
+    {:ok, article} = fixture(:article, author: author)
+
+    [
+      article: article
+    ]
+  end
+
   defp create_author(_context) do
     {:ok, author} = fixture(:author, user_uuid: UUID.uuid4())
 
@@ -107,15 +152,18 @@ defmodule AmalgamaWeb.ArticleControllerTest do
   end
 
   defp publish_articles(%{author: author}) do
-    fixture(:article, author: author)
+    {:ok, article1} = fixture(:article, author: author)
 
-    fixture(:article,
-      author: author,
-      title: "How to train your dragon 2",
-      description: "So toothless",
-      body: "It a dragon"
-    )
+    {:ok, article2} =
+      fixture(:article,
+        author: author,
+        title: "How to train your dragon 2",
+        description: "So toothless",
+        body: "It a dragon"
+      )
 
-    []
+    [
+      articles: [article1, article2]
+    ]
   end
 end
