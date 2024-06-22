@@ -53,10 +53,23 @@ defmodule Amalgama.BlogTest do
     test "should paginate articles", %{articles: [article1, _article2]} do
       assert {[article1], 2} == Blog.list_articles(%{offset: 1})
     end
+
+    @tag :integration
+    test "should filter by author" do
+      assert {[], 0} == Blog.list_articles(%{author: "unknown"})
+    end
+
+    @tag :integration
+    test "should filter by author returning only their articles", %{
+      articles: [article1, article2]
+    } do
+      assert {[article2, article1], 2} == Blog.list_articles(%{author: "jake"})
+    end
   end
 
   defp publish_articles(%{author: author}) do
     {:ok, article1} = fixture(:article, author: author)
+    :timer.sleep(1000)
 
     {:ok, article2} =
       fixture(:article,
