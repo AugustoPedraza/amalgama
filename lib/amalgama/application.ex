@@ -20,6 +20,7 @@ defmodule Amalgama.Application do
       # Start to serve requests, typically the last entry
       AmalgamaWeb.Endpoint,
       Amalgama.Accounts.Supervisor,
+      Amalgama.Blog.Supervisor,
       # Enforce unique constraints
       {Amalgama.Support.Unique, []}
     ]

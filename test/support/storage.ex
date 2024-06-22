@@ -26,6 +26,8 @@ defmodule Amalgama.Storage do
   defp truncate_readstore_tables do
     """
     TRUNCATE TABLE
+      blog_articles,
+      blog_authors,
       accounts_users,
       projection_versions
     RESTART IDENTITY;
