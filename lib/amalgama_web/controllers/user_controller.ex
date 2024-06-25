@@ -2,7 +2,9 @@ defmodule AmalgamaWeb.UserController do
   use AmalgamaWeb, :controller
 
   alias Amalgama.Accounts
-  alias Amalgama.Auth.Guardian
+
+  plug Guardian.Plug.EnsureAuthenticated when action in [:current]
+  plug Guardian.Plug.LoadResource when action in [:current]
 
   action_fallback AmalgamaWeb.FallbackController
 
@@ -17,6 +19,8 @@ defmodule AmalgamaWeb.UserController do
   end
 
   def current(conn, _params) do
+    alias Amalgama.Auth.Guardian
+
     user = conn.private.guardian_current_user_resource
     jwt = Guardian.Plug.current_token(conn)
 

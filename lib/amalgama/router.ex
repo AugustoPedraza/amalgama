@@ -5,7 +5,7 @@ defmodule Amalgama.Router do
   alias Amalgama.Accounts.Commands.RegisterUser
 
   alias Amalgama.Blog.Aggregates.{Author, Article}
-  alias Amalgama.Blog.Commands.{CreateAuthor, PublishArticle}
+  alias Amalgama.Blog.Commands.{CreateAuthor, PublishArticle, FavoriteArticle, UnfavoriteArticle}
 
   alias Amalgama.Support.Middleware.{Uniqueness, Validate}
 
@@ -18,5 +18,5 @@ defmodule Amalgama.Router do
 
   dispatch([RegisterUser], to: User)
   dispatch([CreateAuthor], to: Author)
-  dispatch([PublishArticle], to: Article)
+  dispatch([PublishArticle, FavoriteArticle, UnfavoriteArticle], to: Article)
 end

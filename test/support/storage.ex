@@ -29,6 +29,7 @@ defmodule Amalgama.Storage do
       blog_articles,
       blog_authors,
       accounts_users,
+      blog_favorited_articles,
       projection_versions
     RESTART IDENTITY;
     """

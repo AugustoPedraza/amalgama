@@ -1,12 +1,15 @@
 defmodule AmalgamaWeb.Router do
   use AmalgamaWeb, :router
 
-  pipeline :jwt_authenticated do
-    plug AmalgamaWeb.UserAuth
-  end
+  alias AmalgamaWeb.Plugs.LoadArticleBySlug
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug AmalgamaWeb.UserAuth
+  end
+
+  pipeline :article do
+    plug LoadArticleBySlug
   end
 
   scope "/api", AmalgamaWeb do
@@ -16,14 +19,18 @@ defmodule AmalgamaWeb.Router do
     post "/users", UserController, :create
 
     get "/articles", ArticleController, :index
+    resources "/articles", ArticleController, only: [:create]
     get "/articles/:slug", ArticleController, :show
-  end
-
-  scope "/api", AmalgamaWeb do
-    pipe_through [:api, :jwt_authenticated]
+    # end
 
     get "/user", UserController, :current
-    resources "/articles", ArticleController, only: [:create]
+
+    scope "/articles/:slug" do
+      pipe_through :article
+
+      post "/favorite", FavoriteArticleController, :create
+      delete "/favorite", FavoriteArticleController, :delete
+    end
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

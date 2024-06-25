@@ -8,10 +8,12 @@ defmodule AmalgamaWeb.SessionControllerTest do
   end
 
   describe "authenticate user" do
+    setup [
+      :register_user
+    ]
+
     @tag :web
     test "creates session and renders session when data is valid", %{conn: conn} do
-      {:ok, _} = fixture(:user)
-
       conn =
         post(conn, ~p"/api/users/login",
           user: %{
@@ -38,8 +40,6 @@ defmodule AmalgamaWeb.SessionControllerTest do
 
     @tag :web
     test "does not create session and renders errors when password does not match", %{conn: conn} do
-      {:ok, _} = fixture(:user)
-
       conn =
         post(conn, ~p"/api/users/login",
           user: %{

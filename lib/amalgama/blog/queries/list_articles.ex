@@ -1,22 +1,22 @@
 defmodule Amalgama.Blog.Queries.ListArticles do
   import Ecto.Query
 
-  alias Amalgama.Blog.Projections.Article
+  alias Amalgama.Blog.Projections.{Article, Author, FavoritedArticle}
 
   defmodule Options do
-    defstruct limit: 20,
+    defstruct author: nil,
+              limit: 20,
               offset: 0,
-              author: nil,
               tag: nil
 
     use ExConstructor
   end
 
-  def paginate(params, repo) do
+  def paginate(params, author, repo) do
     options = Options.new(params)
     query = query(options)
 
-    articles = query |> entries(options) |> repo.all()
+    articles = query |> entries(options, author) |> repo.all()
     total_count = query |> count() |> repo.aggregate(:count, :uuid)
 
     {articles, total_count}
@@ -28,8 +28,9 @@ defmodule Amalgama.Blog.Queries.ListArticles do
     |> filter_by_tag(options)
   end
 
-  defp entries(query, %Options{limit: limit, offset: offset}) do
+  defp entries(query, %Options{limit: limit, offset: offset}, author) do
     query
+    |> include_favorited_by_author(author)
     |> order_by([a], desc: a.published_at)
     |> limit(^limit)
     |> offset(^offset)
@@ -50,5 +51,14 @@ defmodule Amalgama.Blog.Queries.ListArticles do
   defp filter_by_tag(query, %Options{tag: tag}) do
     from a in query,
       where: fragment("? @> ?", a.tag_list, [^tag])
+  end
+
+  defp include_favorited_by_author(query, nil), do: query
+
+  defp include_favorited_by_author(query, %Author{uuid: author_uuid}) do
+    from a in query,
+      left_join: f in FavoritedArticle,
+      on: [article_uuid: a.uuid, favorited_by_author_uuid: ^author_uuid],
+      select: %{a | favorited: not is_nil(f.article_uuid)}
   end
 end

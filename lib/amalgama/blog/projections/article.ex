@@ -16,6 +16,8 @@ defmodule Amalgama.Blog.Projections.Article do
     field :author_bio, :string
     field :author_image, :string
 
+    field :favorited, :boolean, virtual: true, default: false
+
     timestamps(type: :utc_datetime)
   end
 end

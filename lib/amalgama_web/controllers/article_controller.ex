@@ -4,10 +4,14 @@ defmodule AmalgamaWeb.ArticleController do
   alias Amalgama.Blog
   alias Blog.Projections.Article
 
+  plug Guardian.Plug.EnsureAuthenticated when action in [:create]
+  plug Guardian.Plug.LoadResource when action in [:create]
+
   action_fallback AmalgamaWeb.FallbackController
 
-  def index(conn, params) do
-    {articles, total_count} = Blog.list_articles(params)
+  def index(%{private: private} = conn, params) do
+    author = Blog.get_author(private[:guardian_current_user_resource])
+    {articles, total_count} = Blog.list_articles(params, author)
     render(conn, :index, articles: articles, total_count: total_count)
   end
 
@@ -27,20 +31,4 @@ defmodule AmalgamaWeb.ArticleController do
     article = Blog.article_by_slug!(slug)
     render(conn, :show, article: article)
   end
-
-  # def update(conn, %{"id" => id, "article" => article_params}) do
-  #   article = Blog.get_article!(id)
-
-  #   with {:ok, %Article{} = article} <- Blog.update_article(article, article_params) do
-  #     render(conn, :show, article: article)
-  #   end
-  # end
-
-  # def delete(conn, %{"id" => id}) do
-  #   article = Blog.get_article!(id)
-
-  #   with {:ok, %Article{}} <- Blog.delete_article(article) do
-  #     send_resp(conn, :no_content, "")
-  #   end
-  # end
 end
